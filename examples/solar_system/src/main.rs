@@ -6,10 +6,11 @@
 //! Inspired by the example found in the MDN docs[1].
 //!
 //! [1]: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations#An_animated_solar_system
+use iced::Background;
 use iced::mouse;
 use iced::widget::canvas::stroke::{self, Stroke};
 use iced::widget::canvas::{Geometry, Path};
-use iced::widget::{canvas, image};
+use iced::widget::{canvas, column, container, image, row, text};
 use iced::window;
 use iced::{
     Color, Element, Fill, Point, Rectangle, Renderer, Size, Subscription,
@@ -56,7 +57,28 @@ impl SolarSystem {
     }
 
     fn view(&self) -> Element<'_, Message> {
-        canvas(&self.state).width(Fill).height(Fill).into()
+        column![
+            container(row![text("Some UI Header...")].height(100).width(Fill))
+                .style(|_| {
+                    container::Style {
+                        background: Some(Background::Color(Color::WHITE)),
+                        text_color: Some(Color::BLACK),
+                        ..Default::default()
+                    }
+                }),
+            canvas(&self.state).width(Fill).height(Fill),
+            container(row![text("Some UI Footer...")].height(100).width(Fill))
+                .style(|_| {
+                    container::Style {
+                        background: Some(Background::Color(Color::WHITE)),
+                        text_color: Some(Color::BLACK),
+                        ..Default::default()
+                    }
+                }),
+        ]
+        .width(Fill)
+        .height(Fill)
+        .into()
     }
 
     fn theme(&self) -> Theme {
